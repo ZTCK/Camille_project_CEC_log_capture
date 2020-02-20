@@ -58,12 +58,12 @@ async def echo(websocket,path):
 def cb(event, *args):
     print("Got event", event, "with data", args)
     global greeting
-    greeting += args + '\n'
+    #greeting += args + '\n'
 # arguments: iils
 def log_cb(event, level, time, message):
     print("CEC Log message:", message, "time:", time, "level:", level, "event:", event)
     global greeting
-    greeting += message
+    greeting += message + '\n'
 
 cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
 cec.add_callback(log_cb, cec.EVENT_LOG)
