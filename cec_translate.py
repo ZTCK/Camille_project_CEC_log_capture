@@ -1,3 +1,7 @@
+'''
+HDMI SPEC 1.4
+from Major Channel Number
+'''
 class cec_translate :
     #header
     cec_header_dictionary = {
@@ -93,15 +97,99 @@ class cec_translate :
         'ff' : "Abort Message",
     }
     
+    Abort_Reason_Dictionary = {
+        '00' : "Unrecognized opcode",
+        '01' : "Not in correct mode to respond",
+        '02' : "Cannot provide source",
+        '03' : "invalid operand",
+        '04' : "Refused",
+        '05' : "Unable to determine",
+    }
+    
+    Analogue_Broadcast_Type_Dictionary = {
+        '00' : "Cable",
+        '01' : "Satellite",
+        '02' : "Terrestrial",
+    }
+    
+    Audio_Rate_Dictionary = {
+        '00' : "Rate Control Off",
+        '01' : "Standard Rate : 100% rate",
+        '02' : "Fast Rate : Max 101% rate",
+        '03' : "Slow Rate : Min 99% rate",
+        '04' : "Standard Rate : 100.0% rate",
+        '05' : "Fast Rate : Max 100.1% rate",
+        '06' : "Slow Rate : Min 99.9% rate",
+    }
+    
+    CEC_Version_Dictionary = {
+        '00' : "Reserved",
+        '01' : "Reserved",
+        '02' : "Reserved",
+        '03' : "Reserved",
+        '04' : "Version 1.3a",
+        '05' : "Version 1.4",
+    }
+    
+    '''def get_Channel_Number_Format(n) {
+        if(n == '01') :
+            return "1-part Channel Number"
+        elif(n == '02') :
+            return "2-part Channel Number"
+    }
+    
+    def get_Broadcast_System(n) {
+        if int(n) == 31 :
+            return "Other System"
+        elif int(n) < 31 and int(n) > 8 :
+            return "Future Use"
+        elif n = '0' : return "PAL B/G"
+        elif n = '1' : return "SECAM L\'"
+        elif n = '2' : return "PAL M"
+        elif n = '3' : return "NTSC M"
+        elif n = '4' : return "PAL I"
+        elif n = '5' : return "SECAM DK"
+        elif n = '6' : return "SECAM B/G"
+        elif n = '7' : return "SECAM L"
+        elif n = '8' : return "PAL DK"
+    }
+    
+    def get_Audio_Volume_Status(n) {
+        if(int("0x" + n, 16) <= 100) :
+            return str(int("0x" + n, 16))
+        elif n == "7f" :
+            return "Current audio volume status is unknown"
+        else :
+            return "Reserved"
+    }
+
+    def get_Audio_Mute_Status(n) {
+        if(n == '0') :
+            return "Audio Mute Off"
+        else :
+            return "Audio Mute On"
+    }
+
+    def get_ASCII(n) {
+        return n.decode("hex") 
+    }
+    
+    def get_Analogue_Frequency(n) {
+        return int("0x"+n, 16) * 62.5   #Khz, n = 2bytes    
+    }
+    '''
     #parameter x
     def translate_cec(self, initiator, destination, opcode) :
         return str(" initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination]
                    + "\', opcode : \'" + cec_translate.cec_opcode_dictionary[opcode] + '\'\n')
     
+    def translate_cec_poll(self, initiator, destination) :
+        return str("  initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination] + "\' #poll message \n")
+        
     def translate_cec_parameter(self, initiator, destination, opcode, parameter) :
         return str(" initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination]
                    + "\', opcode : \'" + cec_translate.cec_opcode_dictionary[opcode] + "\', parameter : \'" + parameter + '\'\n')
-    def translate_cec_poll(self, initiator, destination) :
-        return str("  initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination] + "\' #poll message \n")
-    #pass
-#print(a.translate_cec(initiator, destination, opcode))
+    
+    
+    
+    #parameter contents

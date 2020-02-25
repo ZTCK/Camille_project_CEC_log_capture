@@ -50,20 +50,23 @@ async def echo(websocket,path):
             
         elif(ms[0:2] == 'tx') :
             print(len(ms))
-            if(len(ms) <= 8 and len(ms) >= 6) :
-                cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16))
-            elif(len(ms) >= 9) :
-                array = []
-                n = 9
-                while(n < len(ms)) :
-                    array.append(int("0x" + ms[n:n+2] , 16))
-                    n += 3
-                cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16), bytes(array))
+            try: 
+                if(len(ms) <= 8 and len(ms) >= 6) :
+                    cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16))
+                elif(len(ms) >= 9) :
+                    array = []
+                    n = 9
+                    while(n < len(ms)) :
+                        array.append(int("0x" + ms[n:n+2] , 16))
+                        n += 3
+                    cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16), bytes(array))
+            except ValueError:
+                greeting += "Invalid Expression!\n"
         elif(ms[0:5] == 'clear') :
             greeting = ''
         else :
             print(str(ms))
-#cb function 없어도 됨
+#cb function 배포 전 삭제 할 것
 def cb(event, *args):
     print("Got event", event, "with data", args)
 
