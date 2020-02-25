@@ -5,13 +5,13 @@ import os
 import websockets
 import time  #delete
 import cec
+from cec_translate import cec_translate
 greeting = ''
 start_flag = 2
 print(cec)
 print(websockets)
 async def echo(websocket,path):
     global greeting, start_flag
-    
     array = []
     print("\n",websocket)
     print(path)
@@ -69,14 +69,20 @@ def cb(event, *args):
 
 def log_cb(event, level, time, message):
     print("CEC Log message:", message, "time:", time, "level:", level, "event:", event)
-    global greeting
-    if(greeting == '\'contents of logcapture\'') :
-        greeting = ''
+    global greeting, cec_translate
     if(level == 8) :
-        greeting += "[time : " + '{:>16}'.format(str(time)) + "]   " + message + '\n'
-
+        greeting += "[time : " + '{:>16}'.format(str(time)) + "] " + message
+        print(message[6:8])
+        if(len(message) < 6) :
+            greeting += cec_translate.translate_cec_poll(message[3], message[4])
+        elif(len(message) < 9) :
+            greeting += cec_translate.translate_cec(message[3], message[4], message[6:8])
+        else :
+            greeting += cec_translate.translate_cec_parameter(message[3], message[4], message[6:8], message[9:]) 
 #git update 
 print("ready")
+cec_translate = cec_translate()
+print(type(cec_translate))
 asyncio.get_event_loop().run_until_complete(
     websockets.serve(echo, '192.168.100.36', 8080)
 )

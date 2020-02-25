@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<style>
+
+</style>
+
+
+</head>
+<body>
+
+  <form>
+    <fieldset>
+      <label>CEC Log Capture</label>
+      <!-- CEC input-->
+      <div>
+      	<br>
+        <label>CEC Input</label>  
+        <div name="CEC Input">
+          <label>Header</label>
+          <select id="Initiator">
+          	  <option value="">Initiator</option>
+              <option value="0">0x00 TV</option>
+              <option value="1">0x01 Recording1 (Raspberry Pi)</option>
+              <option value="2">0x02 Recording2</option>
+              <option value="3">0x03 Tuner1</option>
+              <option value="4">0x04 Playback1</option>
+              <option value="5">0x05 Audio system</option>
+              <option value="6">0x06 Tuner2</option>
+              <option value="7">0x07 Tuner3</option>
+              <option value="8">0x08 Playback2</option>
+              <option value="9">0x09 Recording3</option>
+              <option value="A">0x0A Tuner4</option>
+              <option value="B">0x0B Playback3</option>
+              <option value="C">0x0C Reserved</option>
+              <option value="D">0x0D Reserved</option>
+              <option value="E">0x0E Specific Use</option>
+              <option value="F">0x0F Unregistered</option>
+          </select>
+          <select id="Destination" >
+          	  <option value="">Destination</option>
+              <option value="0">0x00 TV</option>
+              <option value="1">0x01 Recording1 (Raspberry Pi)</option>
+              <option value="2">0x02 Recording2</option>
+              <option value="3">0x03 Tuner1</option>
+              <option value="4">0x04 Playback1</option>
+              <option value="5">0x05 Audio system</option>
+              <option value="6">0x06 Tuner2</option>
+              <option value="7">0x07 Tuner3</option>
+              <option value="8">0x08 Playback2</option>
+              <option value="9">0x09 Recording3</option>
+              <option value="A">0x0A Tuner4</option>
+              <option value="B">0x0B Playback3</option>
+              <option value="C">0x0C Reserved</option>
+              <option value="D">0x0D Reserved</option>
+              <option value="E">0x0E Specific Use</option>
+              <option value="F">0x0F Unregistered</option>
+          </select>
+          
+          <label>&nbspOpcode</label>
+          
+          <select id="Opcode">
+          	<option value="">Select</option>
+            <option value="00">0x00 Feature Abort</option>
+            <option value="04">0x04 Image View On</option>
+            <option value="05">0x05 Tuner Step Increment</option>
+            <option value="06">0x06 Tuner Step Decrement</option>
+            <option value="07">0x07 Tuner Device Status</option>
+            <option value="08">0x08 Give Tuner Device Status</option>
+            <option value="09">0x09 Record On</option>
+            <option value="0A">0x0A Record Status</option>
+            <option value="0B">0x0B Record Off</option>
+            <option value="0D">0x0D Text View On</option>
+            <option value="0F">0x0F Record TV Screen</option>
+            <option value="1A">0x1A Give Deck Status</option>
+            <option value="1B">0x1B Deck Status</option>
+            <option value="32">0x32 Set Menu Language</option>
+            <option value="33">0x33 Clear Analogue Timer</option>
+            <option value="34">0x34 Set Analogue Timer</option>
+            <option value="35">0x35 Timer Status</option>
+            <option value="36">0x36 Standby</option>
+            <option value="41">0x41 Play</option>
+            <option value="42">0x42 Deck Control</option>
+            <option value="43">0x43 Timer Cleared Status</option>
+            <option value="44">0x44 User Control Pressed</option>
+            <option value="45">0x45 User Control Released</option>
+            <option value="46">0x46 Give OSD Name</option>
+            <option value="47">0x47 Set OSD Name</option>
+            <option value="64">0x64 Set OSD String</option>
+            <option value="67">0x67 Set Timer Program Title</option>
+            <option value="70">0x70 System Audio Mode Request</option>
+            <option value="71">0x71 Give Audio Status</option>
+            <option value="72">0x72 Set System Audio Mode</option>
+            <option value="7A">0x7A Report Audio Status</option>
+            <option value="7D">0x7D Give System Audio Mode Status</option>
+            <option value="7E">0x7E System Audio Mode Status</option>
+            <option value="80">0x80 Routing Change</option>
+            <option value="81">0x81 Routing Information</option>
+            <option value="82">0x82 Active Source</option>
+            <option value="83">0x83 Give Physical Address</option>
+            <option value="84">0x84 Report Physical Address</option>
+            <option value="85">0x85 Request Active Source</option>
+            <option value="86">0x86 Set Stream Path</option>
+            <option value="87">0x87 Device Vendor ID</option>
+            <option value="89">0x89 Vendor Command</option>
+            <option value="8A">0x8A Vendor Remote Button Down</option>
+            <option value="8B">0x8B Vendor Remote Button Up</option>
+            <option value="8C">0x8C Give Device Vendor ID</option>
+            <option value="8D">0x8D Menu Request</option>
+            <option value="8E">0x8E Menu Status</option>
+            <option value="8F">0x8F Give Device Power Status</option>
+            <option value="90">0x90 Report Power Status</option>
+            <option value="91">0x91 Get Menu Language</option>
+            <option value="92">0x92 Select Analogue Service</option>
+            <option value="93">0x93 Select Degital Service</option>
+            <option value="97">0x97 Set Digital Timer</option>
+            <option value="99">0x99 clear Digital Timer</option>
+            <option value="9A">0x9A Set Audio Rate</option>
+            <option value="9D">0x9D Inactive Source</option>
+            <option value="9E">0x9E CEC Version</option>
+            <option value="9F">0x9F Get CEC Version</option>
+            <option value="A0">0xA0 Vendor Command With ID</option>
+            <option value="A1">0xA1 Clear External Timer</option>
+            <option value="A2">0xA2 Set External Timer</option>
+            <option value="A3">0xA3 Report Short Audio Descriptor</option>
+            <option value="A4">0xA4 Request Short Audio Descriptor</option>
+            <option value="C0">0xC0 Initiate ARC</option>
+            <option value="C1">0xC1 Report ARC Initiated</option>
+            <option value="C2">0xC2 Report ARC Terminated</option>
+            <option value="C3">0xC3 Request ARC Initiation</option>
+            <option value="C4">0xC4 Report ARC Termination</option>
+            <option value="C5">0xC5 Terminate ARC</option>
+            <option value="F8">0xF8 CDC Message</option>
+            <option value="FF">0xFF Abort Message</option>
+            
+          </select>
+          <label>&nbspParameter</label>
+          <input type='text' id='Parameter' placeholder='ex) 00:00:00...'>
+          <button onclick = "setInput()" type = "button">Set Input</button>
+        </div>
+        <div>
+          <input type = 'text' id = "CECInput" placeholder="ex) 04:00...">
+          <button type = "button" onclick = "Send()">Send</button>
+        </div>
+      </div>
+      
+      
+      <!-- RPI Control -->
+      <div class="form-group">
+        <br>
+        <div class="col-md-8">
+          <button type = "button" id = "start" onclick = "Start()">Start Log Capture</button>
+          <button type = "button" id = "stop" onclick = "Stop()">Stop Log Capture</button>
+          <button type = "button" id = "copy" onclick = "Copy()">Copy to Clipboard</button>
+          <button type = "button" id = "save" onclick = "Save()">Save on USB Driver</button>
+          <button type = "button" id = "clear" onclick = "Clear()">Clear</button>
+          <button type = "button" id = "create">Create file</button>
+          <a download = "io.txt" id="downloadlink" style="display: none">Download to USB</a>
+          <button type = "button" style="float: right;" onclick="window.location.href='/debug/'">To Function Debug</button>
+        </div>
+      </div>
+
+    </fieldset>
+  </form>
+
+  <form>
+    <fieldset>
+      <textarea id="section"  style="width:100%; height:100%" rows = 40 readonly="readonly"></textarea>
+    </fieldset>
+  </form>
+</body>
+
+<script>
+  (function () {
+var textFile = null,
+  makeTextFile = function (text) {
+    var data = new Blob([text], {type: 'text/plain'});
+
+    // If we are replacing a previously generated file we need to
+    // manually revoke the object URL to avoid memory leaks.
+    if (textFile !== null) {
+      window.URL.revokeObjectURL(textFile);
+    }
+
+    textFile = window.URL.createObjectURL(data);
+
+    return textFile;
+  };
+
+
+  var create = document.getElementById('create'),
+    textbox = document.getElementById('section');
+
+  create.addEventListener('click', function () {
+    var filename =  prompt("Please enter file name:");
+    if(filename == null || filename == "") {
+      alert("write file name");
+    }
+    else {
+      var link = document.getElementById('downloadlink');
+      link.href = makeTextFile(textbox.value);
+      link.style.display = 'inline';
+      link.innerHTML = filename + ".txt";
+      link.download = filename + ".txt";
+    }
+  }, false);
+})();
+  function setInput() {
+    document.getElementById("CECInput").value = document.getElementById("Initiator").value +  document.getElementById("Destination").value;
+    if(document.getElementById("Opcode").value != "") {
+      document.getElementById("CECInput").value += ':' + document.getElementById("Opcode").value;
+      if(document.getElementById("Parameter").value != "") {
+        document.getElementById("CECInput").value += ':' + document.getElementById('Parameter').value;
+      }
+    }
+  }
+  function Send() {
+    //rpi
+    btn_state = "tx " + Input.value;
+  }
+  function Start() {
+    //rpi
+    var startbtn = document.getElementById("start");
+    var stopbtn = document.getElementById("stop");
+    startbtn.style.borderStyle = 'inset';
+    stopbtn.style.borderStyle = 'outset';
+    btn_state = 'start';
+  }
+  function Stop() {
+    //rpi
+    var startbtn = document.getElementById("start");
+    var stopbtn = document.getElementById("stop");
+    startbtn.style.borderStyle = 'outset';
+    stopbtn.style.borderStyle = 'inset';
+    btn_state = 'stop';
+  }
+  function Save() {
+    //rpi
+    //pre_btn_state = btn_state;
+    var filename =  prompt("Please enter file name:");
+    if(filename == null || filename == "") {
+      alert("write file name");
+    }
+    else {
+      btn_state = 'save' + filename +'.txt ' + document.getElementById('section').value;
+      var startbtn = document.getElementById("start");
+      var stopbtn = document.getElementById("stop");
+      startbtn.style.borderStyle = 'outset';
+      stopbtn.style.borderStyle = 'inset';
+    }
+  }
+  function Copy() {
+    var copyText = document.getElementById("section");
+    copyText.select();
+    copyText.setSelectionRange(0, -1);
+    document.execCommand("copy");
+    alert("Complete!");
+  }
+  function Clear() {
+    btn_state = 'clear';
+    
+  }
+  var Input = document.getElementById("CECInput");
+  var sock = new WebSocket("ws://192.168.100.36:8080");
+  var btn_state = '1';
+  var pre_btn_state = '1';
+  sock.onmessage = function (e) {
+    console.log(e.data);
+    if(pre_btn_state != e.data.toString())
+    	document.getElementById('section').value = e.data.toString();
+    pre_btn_state = e.data.toString();
+    sock.send(btn_state);
+    if(btn_state != '1') btn_state = '1';
+  };
+  sock.onopen = function(e) {
+    console.log("open");
+  };
+  sock.onclose = function(e) {
+    console.log("close");
+  };
+  sock.onerror = function(e) {
+    console.log(e.data)
+  };
+
+</script>
+</html>
+

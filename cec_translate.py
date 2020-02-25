@@ -1,0 +1,107 @@
+class cec_translate :
+    #header
+    cec_header_dictionary = {
+        '0' : "TV",
+        '1' : "Recording 1",
+        '2' : "Recording 2",
+        '3' : "Tuner 1",
+        '4' : "Playback 1",
+        '5' : "Audio system",
+        '6' : "Tuner 2",
+        '7' : "Tuner 3",
+        '8' : "Playback 2",
+        '9' : "Recording 3",
+        'a' : "Tuner 4",
+        'b' : "Playback 3",
+        'c' : "Reserved",
+        'd' : "Reserved",
+        'e' : "Specific Use",
+        'f' : "Unregistered",
+    }
+    #opcode
+    cec_opcode_dictionary = {
+        '00' : "Feature Abort",
+        '04' : "Image View On",
+        '05' : "Tuner Step Increment",
+        '06' : "Tuner Step Decrement",
+        '07' : "Tuner Device Status",
+        '08' : "Give Tuner Device Status",
+        '09' : "Record On",
+        '0a' : "Record Status",
+        '0b' : "Record Off",
+        '0d' : "Text View On",
+        '0f' : "Record TV Screen",
+        '1a' : "Give Deck Status",
+        '1b' : "Deck Status",
+        '32' : "Set Menu Language",
+        '33' : "Clear Analogue Timer",
+        '34' : "Set Analogue Timer",
+        '35' : "Timer Status",
+        '36' : "Standby",
+        '41' : "Play",
+        '42' : "Deck Control",
+        '43' : "Timer Cleared Status",
+        '44' : "User Control Pressed",
+        '45' : "User Control Released",
+        '46' : "Give OSD Name",
+        '47' : "Set OSD Name",
+        '64' : "Set OSD String",
+        '67' : "Set Timer Program Title",
+        '70' : "System Audio Mode Request",
+        '71' : "Give Audio Status",
+        '72' : "Set System Audio Mode",
+        '7a' : "Report Audio Status",
+        '7d' : "Give System Audio Mode Status",
+        '7e' : "System Audio Mode Status",
+        '80' : "Routing Change",
+        '81' : "Routing Information",
+        '82' : "Active Source",
+        '83' : "Give Physical Address",
+        '84' : "Report Physical Address",
+        '85' : "Request Active Source",
+        '86' : "Set Stream Path",
+        '87' : "Device Vendor ID",
+        '89' : "Vendor Command",
+        '8a' : "Vendor Remote Button Down",
+        '8b' : "Vendor Remote Button Up",
+        '8c' : "Give Device Vendor ID",
+        '8d' : "Menu Request",
+        '8e' : "Menu Status",
+        '8f' : "Give Device Power Status",
+        '90' : "Report Power Status",
+        '91' : "Get Menu Language",
+        '92' : "Select Analogue Service",
+        '93' : "Select Degital Service",
+        '97' : "Set Digital Timer",
+        '99' : "clear Digital Timer",
+        '9a' : "Set Audio Rate",
+        '9d' : "Inactive Source",
+        '9e' : "CEC Version",
+        '9f' : "Get CEC Version",
+        'a0' : "Vendor Command With ID",
+        'a1' : "Clear External Timer",
+        'a2' : "Set External Timer",
+        'a3' : "Report Short Audio Descriptor",
+        'a4' : "Request Short Audio Descriptor",
+        'c0' : "Initiate ARC",
+        'c1' : "Report ARC Initiated",
+        'c2' : "Report ARC Terminated",
+        'c3' : "Request ARC Initiation",
+        'c4' : "Report ARC Termination",
+        'c5' : "Terminate ARC",
+        'f8' : "CDC Message",
+        'ff' : "Abort Message",
+    }
+    
+    #parameter x
+    def translate_cec(self, initiator, destination, opcode) :
+        return str(" initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination]
+                   + "\', opcode : \'" + cec_translate.cec_opcode_dictionary[opcode] + '\'\n')
+    
+    def translate_cec_parameter(self, initiator, destination, opcode, parameter) :
+        return str(" initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination]
+                   + "\', opcode : \'" + cec_translate.cec_opcode_dictionary[opcode] + "\', parameter : \'" + parameter + '\'\n')
+    def translate_cec_poll(self, initiator, destination) :
+        return str("  initiator : \'" + cec_translate.cec_header_dictionary[initiator] + "\', destination : \'" + cec_translate.cec_header_dictionary[destination] + "\' #poll message \n")
+    #pass
+#print(a.translate_cec(initiator, destination, opcode))
