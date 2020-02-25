@@ -5,7 +5,7 @@ import os
 import websockets
 import time  #delete
 import cec
-greeting = '\'contents of logcapture\''
+greeting = ''
 start_flag = 2
 print(cec)
 print(websockets)
@@ -30,9 +30,10 @@ async def echo(websocket,path):
                 file.close()
             cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
             cec.remove_callback(log_cb, cec.EVENT_ALL)
+            start_flag = 0;
         elif(ms[0:5] == 'start') :
+            greeting += 'start log capture\n'
             if start_flag == 0 :
-                greeting = ''
                 cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
                 cec.add_callback(log_cb, cec.EVENT_LOG)
             elif start_flag == 2 :
@@ -42,6 +43,7 @@ async def echo(websocket,path):
             start_flag = 1
             
         elif(ms[0:4] == 'stop') :
+            greeting += 'stop log capture\n'
             cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
             cec.remove_callback(log_cb, cec.EVENT_ALL)
             start_flag = 0
@@ -57,8 +59,10 @@ async def echo(websocket,path):
                     array.append(int("0x" + ms[n:n+2] , 16))
                     n += 3
                 cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16), bytes(array))
-                
-
+        elif(ms[0:5] == 'clear') :
+            greeting = ''
+        else :
+            print(str(ms))
 #cb function 없어도 됨
 def cb(event, *args):
     print("Got event", event, "with data", args)
