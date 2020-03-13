@@ -5,8 +5,10 @@ import os
 import websockets
 import time  #delete
 import cec
+import datetime
 from cec_translate import cec_translate
 greeting = ''
+now = datetime.datetime
 start_flag = 2
 print(cec)
 print(websockets)
@@ -50,44 +52,48 @@ async def echo(websocket,path):
             
         elif(ms[0:2] == 'tx') :
             print(len(ms))
-            try: 
-                if(len(ms) <= 8 and len(ms) >= 6) :
-                    cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16))
-                elif(len(ms) >= 9) :
-                    array = []
-                    n = 9
-                    while(n < len(ms)) :
-                        array.append(int("0x" + ms[n:n+2] , 16))
-                        n += 3
-                    cec.transmit(int(ms[4]), int("0x" + ms[6:8], 16), bytes(array))
-            except ValueError:
-                greeting += "Invalid Expression!\n"
+            print(ms[6:8])
+            print(type(ms))
+            #try: 
+            if(len(ms) <= 8 and len(ms) >= 6) :
+                cec.transmit(int("0x" + ms[4], 16), int("0x" + ms[6:8], 16))
+            elif(len(ms) >= 9) :
+                array = []
+                n = 9
+                while(n < len(ms)) :
+                    array.append(int("0x" + ms[n:n+2] , 16))
+                    n += 3
+                cec.transmit(int("0x" + ms[4], 16), int("0x" + ms[6:8], 16), bytes(array))
+            #except ValueError:
+            #    greeting += "Invalid Expression!\n"
         elif(ms[0:5] == 'clear') :
             greeting = ''
-        else :
-            print(str(ms))
 #cb function 배포 전 삭제 할 것
 def cb(event, *args):
     print("Got event", event, "with data", args)
 
 def log_cb(event, level, time, message):
+    global greeting, cec_translate, now
+    present_Time = now.now()
+    
+    send_Time = str(str("{:02d}".format(int(present_Time.hour))) + ':' + str("{:02d}".format(int(present_Time.minute)))
+                    + ':' + str("{:02d}".format(int(present_Time.second))) + ':' + str("{:03d}".format(int(present_Time.microsecond/1000))))
     print("CEC Log message:", message, "time:", time, "level:", level, "event:", event)
-    global greeting, cec_translate
+    
     if(level == 8) :
-        greeting += "[time : " + '{:>16}'.format(str(time)) + "] " + message
-        print(message[6:8])
-        if(len(message) < 6) :
+        greeting += send_Time + ' '
+        if(len(message) < 6) : 
             greeting += cec_translate.translate_cec_poll(message[3], message[4])
-        elif(len(message) < 9) :
+        elif(len(message) < 9) : 
             greeting += cec_translate.translate_cec(message[3], message[4], message[6:8])
         else :
             greeting += cec_translate.translate_cec_parameter(message[3], message[4], message[6:8], message[9:]) 
-#git update 
+ 
 print("ready")
 cec_translate = cec_translate()
 print(type(cec_translate))
 asyncio.get_event_loop().run_until_complete(
-    websockets.serve(echo, '192.168.100.36', 8080)
+    websockets.serve(echo, '172.30.1.13', 8080)  #192.168.100.36
 )
 
 asyncio.get_event_loop().run_forever()
