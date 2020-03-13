@@ -7,23 +7,23 @@ Sound Bar Debug Tool allows you to check CEC or MTK Log
 Link: https://sourceforge.net/projects/win32diskimager/
 Download win32diskimage program and launch.
 Write path of provided image in "Image File" and assign "device" to empty micro SD card driver. 
-![image_8](./image/8.jpg)
+![image_8](./image/8.JPG)
 It would take about 20 minutes.
 
 # RPi initial setting
 if you turn on the RPi, it will be set for Korean. So you should change time, keyboard and Locale.
 ## Locale
-![image_1](./image/1.jpg)
-![image_2](./image/2.jpg)
+![image_1](./image/1.JPG)
+![image_2](./image/2.JPG)
 
 ## Timezone
-![image_3](./image/3.jpg)
+![image_3](./image/3.JPG)
 
 ## Keyboard
-![image_4](./image/4.jpg)
+![image_4](./image/4.JPG)
 
 ## set wifi
-![image_5](./image/5.jpg)
+![image_5](./image/5.JPG)
 
 
 ## setting nginx
@@ -33,8 +33,11 @@ open mysite_nginx.conf file and change server_name to RPi's ip address
 
 Follow this way to know RPi's ip address
 1. open Terminal
+
 ![image_6](./image/6.png)
+
 2. write 'hostname -I'
+
 ![image_7](./image/7.png)
 
 the red box is your ip address
@@ -59,8 +62,8 @@ write RPi's address:8000 on the addressbar
 Then you can see two buttons on the web page and choose what you want to do.
 
 # feature
-## CECLogCapture
 
+## CECLogCapture
 1. Header Initiator : you can choose everything of header contents but recommend RPi contents
 2. Header Destination : choose device you want to send commend
 3. Opcode : opcode that you want to send
