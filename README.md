@@ -7,23 +7,23 @@ Sound Bar Debug Tool allows you to check CEC or MTK Log
 Link: https://sourceforge.net/projects/win32diskimager/
 Download win32diskimage program and launch.
 Write path of provided image in "Image File" and assign "device" to empty micro SD card driver. 
-![image_8](./image/8.JPG)
+![image_8](./image/8.jpeg)
 It would take about 20 minutes.
 
 # RPi initial setting
 if you turn on the RPi, it will be set for Korean. So you should change time, keyboard and Locale.
 ## Locale
-![image_1](./image/1.JPG)
-![image_2](./image/2.JPG)
+![image_1](./image/1.jpeg)
+![image_2](./image/2.jpeg)
 
 ## Timezone
-![image_3](./image/3.JPG)
+![image_3](./image/3.jpeg)
 
 ## Keyboard
-![image_4](./image/4.JPG)
+![image_4](./image/4.jpeg)
 
 ## set wifi
-![image_5](./image/5.JPG)
+![image_5](./image/5.jpeg)
 
 
 ## setting nginx
@@ -58,7 +58,7 @@ Then Don't close the terminal and open new terminal.
 # open the web page
 open the browser like chrome, opera, etc...
 write RPi's address:8000 on the addressbar
-![image_9](./image/9.jpg)
+![image_9](./image/9.jpeg)
 Then you can see two buttons on the web page and choose what you want to do.
 
 # feature
