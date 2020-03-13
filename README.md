@@ -11,6 +11,7 @@ Write path of provided image in "Image File" and assign "device" to empty micro 
 It would take about 20 minutes.
 
 # RPi initial setting
+connect micro SD card, HDMI cable, power in RPI.
 if you turn on the RPi, it will be set for Korean. So you should change time, keyboard and Locale.
 ## Locale
 ![image_1](./image/1.jpeg)
@@ -27,7 +28,6 @@ if you turn on the RPi, it will be set for Korean. So you should change time, ke
 
 
 ## setting nginx
-connect micro SD card, HDMI cable, power in RPI.
 open the 'sqltest' folder and move to mysite/mysite.
 ![image_7](./image/10.png)
 ![image_7](./image/11.png)
