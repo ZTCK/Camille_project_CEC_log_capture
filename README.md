@@ -20,7 +20,7 @@ if you turn on the RPi, it will be set for Korean. So you should change time, ke
 ![image_3](./image/3.jpg)
 
 ## Keyboard
-![image_4](./image/4.jpg)[ḟṪẁĠ1, 4]
+![image_4](./image/4.jpg)
 
 ## set wifi
 ![image_5](./image/5.jpg)
@@ -33,9 +33,9 @@ open mysite_nginx.conf file and change server_name to RPi's ip address
 
 Follow this way to know RPi's ip address
 1. open Terminal
-![image_6](./image/6.jpg)
+![image_6](./image/6.png)
 2. write 'hostname -I'
-![image_7](./image/7.jpg)
+![image_7](./image/7.png)
 
 the red box is your ip address
 
