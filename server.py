@@ -93,7 +93,7 @@ print("ready")
 cec_translate = cec_translate()
 print(type(cec_translate))
 asyncio.get_event_loop().run_until_complete(
-    websockets.serve(echo, '172.30.1.13', 8080)  #192.168.100.36
+    websockets.serve(echo, '172.30.1.11', 8080)  #192.168.100.36
 )
 
 asyncio.get_event_loop().run_forever()

@@ -67,6 +67,7 @@ Then you can see two buttons on the web page and choose what you want to do.
 # feature
 
 ## CECLogCapture
+![image_13](./image/13.jpeg)
 1. Header Initiator : you can choose everything of header contents but recommend RPi contents
 2. Header Destination : choose device you want to send commend
 3. Opcode : opcode that you want to send
