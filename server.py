@@ -6,9 +6,12 @@ import websockets
 import time  #delete
 import cec
 import datetime
+import serial
 from cec_translate import cec_translate
+import RPi.GPIO as GPIO
 greeting = ''
 now = datetime.datetime
+webpage = 0
 start_flag = 2
 print(cec)
 print(websockets)
@@ -23,6 +26,9 @@ async def echo(websocket,path):
         await websocket.send(str(greeting))
         ms = await websocket.recv()
         print(ms)
+        if ms == '1' : webpage = 1
+        elif ms == '2' : webpage = 2
+        
         if(ms[0:4] == 'save') :
             save_path = '/media/usb0/'
             if(os.access(save_path, os.W_OK)) :
@@ -33,41 +39,68 @@ async def echo(websocket,path):
             cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
             cec.remove_callback(log_cb, cec.EVENT_ALL)
             start_flag = 0;
-        elif(ms[0:5] == 'start') :
-            greeting += 'start log capture\n'
-            if start_flag == 0 :
-                cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
-                cec.add_callback(log_cb, cec.EVENT_LOG)
-            elif start_flag == 2 :
-                cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
-                cec.add_callback(log_cb, cec.EVENT_LOG)
-                cec.init()
-            start_flag = 1
             
-        elif(ms[0:4] == 'stop') :
-            greeting += 'stop log capture\n'
-            cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
-            cec.remove_callback(log_cb, cec.EVENT_ALL)
-            start_flag = 0
             
-        elif(ms[0:2] == 'tx') :
-            print(len(ms))
-            print(ms[6:8])
-            print(type(ms))
-            #try: 
-            if(len(ms) <= 8 and len(ms) >= 6) :
-                cec.transmit(int("0x" + ms[4], 16), int("0x" + ms[6:8], 16))
-            elif(len(ms) >= 9) :
-                array = []
-                n = 9
-                while(n < len(ms)) :
-                    array.append(int("0x" + ms[n:n+2] , 16))
-                    n += 3
-                cec.transmit(int("0x" + ms[4], 16), int("0x" + ms[6:8], 16), bytes(array))
-            #except ValueError:
-            #    greeting += "Invalid Expression!\n"
-        elif(ms[0:5] == 'clear') :
-            greeting = ''
+        if webpage == 1 :
+            if(ms[0:5] == 'start') :
+                greeting += 'start log capture\n'
+                if start_flag == 0 :
+                    cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
+                    cec.add_callback(log_cb, cec.EVENT_LOG)
+                elif start_flag == 2 :
+                    cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
+                    cec.add_callback(log_cb, cec.EVENT_LOG)
+                    cec.init()
+                start_flag = 1
+                
+            elif(ms[0:4] == 'stop') :
+                greeting += 'stop log capture\n'
+                cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
+                cec.remove_callback(log_cb, cec.EVENT_ALL)
+                start_flag = 0
+                
+            elif(ms[0:2] == 'tx') :
+                print(len(ms))
+                print(ms[6:8])
+                print(type(ms))
+                #try: 
+                if(len(ms) <= 8 and len(ms) >= 6) :
+                    cec.transmit(int("0x" + ms[4], 16), int("0x" + ms[6:8], 16))
+                elif(len(ms) >= 9) :
+                    array = []
+                    n = 9
+                    while(n < len(ms)) :
+                        array.append(int("0x" + ms[n:n+2] , 16))
+                        n += 3
+                    cec.transmit(int("0x" + ms[4], 16), int("0x" + ms[6:8], 16), bytes(array))
+                #except ValueError:
+                #    greeting += "Invalid Expression!\n"
+               
+            elif(ms[0:5] == 'clear') :
+                greeting = ''
+        elif webpage == 2 :
+            if(ms[0:5] == 'start') : 
+                if(GPIO.RPI_REVISION < 3) :
+                    ser = serial.Serial(port = "/dev/ttyAMA0",baudrate = 115200,timeout = 3.0)
+                else :
+                    ser = serial.Serial(port = "/dev/serial0",baudrate = 115200,timeout = 3.0)
+                try :
+                    ser.close()
+                    ser.open()
+                    time.sleep(1)
+                    while(True) :
+                        time.sleep(0.1)
+                        ser.flushInput()
+                        ser.flushOutput()
+                        data = ser.read(ser.inWaiting())
+                        print(data)
+                except (keyboardInterrupt, SystemExit):
+                    print("Exit..")
+                finally :
+                    ser.close()
+                    print("close")
+                    
+                                        
 #cb function 배포 전 삭제 할 것
 def cb(event, *args):
     print("Got event", event, "with data", args)
@@ -93,7 +126,7 @@ print("ready")
 cec_translate = cec_translate()
 print(type(cec_translate))
 asyncio.get_event_loop().run_until_complete(
-    websockets.serve(echo, '172.30.1.11', 8080)  #192.168.100.36
+    websockets.serve(echo, '172.30.1.27', 8080)  #192.168.100.36
 )
 
 asyncio.get_event_loop().run_forever()
