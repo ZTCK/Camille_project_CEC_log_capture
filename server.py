@@ -9,41 +9,54 @@ import datetime
 import serial
 from cec_translate import cec_translate
 import RPi.GPIO as GPIO
+import threading
 greeting = ''
 now = datetime.datetime
-webpage = 0
+webpage = 0    #1 = ceclogcapture  2 = function debug
 start_flag = 2
+exitThread = 0
 print(cec)
 print(websockets)
 async def echo(websocket,path):
-    global greeting, start_flag
+    global greeting, start_flag, webpage, exitThread
     array = []
     print("\n",websocket)
     print(path)
     ms = '0'
     while 1:
         time.sleep(0.1)
+        prewebpage = webpage
+        if ms == '1' :
+            webpage = 1
+            exitThread = 0
+        elif ms == '2' : webpage = 2
+        if prewebpage != webpage and prewebpage != 0 :
+            greeting = ''
+            if(start_flag == 1) :
+                start_flag = 0
         await websocket.send(str(greeting))
         ms = await websocket.recv()
         print(ms)
-        if ms == '1' : webpage = 1
-        elif ms == '2' : webpage = 2
         
         if(ms[0:4] == 'save') :
-            save_path = '/media/usb0/'
-            if(os.access(save_path, os.W_OK)) :
-                completeName = os.path.join(save_path, ms[4:ms.find(".txt") + 4]) 
-                file = open(completeName, "w")
-                file.write(ms[ms.find(".txt") + 5:])
-                file.close()
+            try : 
+                save_path = '/media/usb0/'
+                if(os.access(save_path, os.W_OK)) :
+                    completeName = os.path.join(save_path, ms[4:ms.find(".txt") + 4]) 
+                    file = open(completeName, "w")
+                    file.write(ms[ms.find(".txt") + 5:])
+                    file.close()
+            except :
+                greeting += "Save on USB Failed, Save on your PC or phone by create file button"
             cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
             cec.remove_callback(log_cb, cec.EVENT_ALL)
-            start_flag = 0;
+            if(start_flag == 1) :
+                start_flag = 0 
             
             
         if webpage == 1 :
             if(ms[0:5] == 'start') :
-                greeting += 'start log capture\n'
+                greeting = 'start log capture\n'
                 if start_flag == 0 :
                     cec.add_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
                     cec.add_callback(log_cb, cec.EVENT_LOG)
@@ -57,7 +70,8 @@ async def echo(websocket,path):
                 greeting += 'stop log capture\n'
                 cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
                 cec.remove_callback(log_cb, cec.EVENT_ALL)
-                start_flag = 0
+                if(start_flag == 1) :
+                    start_flag = 0
                 
             elif(ms[0:2] == 'tx') :
                 print(len(ms))
@@ -79,29 +93,63 @@ async def echo(websocket,path):
             elif(ms[0:5] == 'clear') :
                 greeting = ''
         elif webpage == 2 :
-            if(ms[0:5] == 'start') : 
-                if(GPIO.RPI_REVISION < 3) :
-                    ser = serial.Serial(port = "/dev/ttyAMA0",baudrate = 115200,timeout = 3.0)
-                else :
-                    ser = serial.Serial(port = "/dev/serial0",baudrate = 115200,timeout = 3.0)
+            if(start_flag == 1) :
+                start_flag = 0
+            #await websocket.send(str(greeting))
+            #ms = await websocket.recv()
+            #print(exitThread)
+            cec.remove_callback(cb, cec.EVENT_ALL & ~cec.EVENT_LOG)
+            cec.remove_callback(log_cb, cec.EVENT_ALL)
+            if(ms == 'stop') : exitThread = 0
+            if(ms[0:5] == 'start') :
+                exitThread = 1
+                ser = serial.Serial(port = "/dev/serial0")
+                if ms[6] == '0' : ser.baudrate = 9600
+                elif ms[6] == '1' : ser.baudrate = 14400
+                elif ms[6] == '2' : ser.baudrate = 19200
+                elif ms[6] == '3' : ser.baudrate = 38400
+                elif ms[6] == '4' : ser.baudrate = 57600
+                elif ms[6] == '5' : ser.baudrate = 115200
+                elif ms[6] == '6' : ser.baudrate = 230400
+                elif ms[6] == '7' : ser.baudrate = 460800
+                elif ms[6] == '8' : ser.baudrate = 921600
+                
+                if ms[7] == '0' : ser.bytesize = serial.SEVENBITS
+                elif ms[7] == '1' : ser.bytesize = serial.EIGHTBITS
+                
+                if ms[8] == '0' : ser.parity = serial.PARITY_NONE 
+                elif ms[8] == '1' : ser.parity = serial.PARITY_ODD
+                elif ms[8] == '2' : ser.parity = serial.PARITY_EVEN
+                elif ms[8] == '3' : ser.parity = serial.PARITY_MARK
+                elif ms[8] == '4' : ser.parity = serial.PARITY_SPACE
+                
+                if ms[9] == '0' : ser.stopbits = serial.STOPBITS_ONE
+                elif ms[9] == '1' : ser.stopbits = serial.STOPBITS_ONE_POINT_FIVE
+                elif ms[9] == '2' : ser.stopbits = serial.STOPBITS_TWO
+                
+                greeting = 'opened\n'
                 try :
-                    ser.close()
-                    ser.open()
-                    time.sleep(1)
-                    while(True) :
-                        time.sleep(0.1)
-                        ser.flushInput()
-                        ser.flushOutput()
-                        data = ser.read(ser.inWaiting())
-                        print(data)
-                except (keyboardInterrupt, SystemExit):
-                    print("Exit..")
-                finally :
-                    ser.close()
-                    print("close")
+                    ser.flushInput()
+                    ser.flushOutput()
+                    if(ms == 'stop') : break
+                    t=threading.Thread(target=serial_Receive,args=(ser,))
+                    t.start()
                     
-                                        
-#cb function 배포 전 삭제 할 것
+                except :
+                    continue
+def serial_Receive(ser) :
+    global greeting
+    global exitThread
+    while exitThread == 1:
+        try :
+            greeting += str(ser.read_until(b'\n').strip().decode('utf-8')) + "\n"#ser.inWaiting()
+            print(greeting)
+        except :
+            continue
+    ser.close()
+#data = ser.read_until(b'\n').strip().decode()#ser.inWaiting()
+    #greeting += str(data) + '\n'
+    
 def cb(event, *args):
     print("Got event", event, "with data", args)
 
