@@ -8,6 +8,7 @@ Link: https://sourceforge.net/projects/win32diskimager/
 Download win32diskimage program and launch.
 Write path of provided image in "Image File" and assign "device" to empty micro SD card driver. 
 ![image_8](./image/8.jpeg)
+
 It would take about 20 minutes.
 
 # RPi initial setting
@@ -29,9 +30,13 @@ if you turn on the RPi, it will be set for Korean. So you should change time, ke
 
 ## setting nginx
 open the 'sqltest' folder and move to mysite/mysite.
+
 ![image_7](./image/10.png)
+
 ![image_7](./image/11.png)
+
 open mysite_nginx.conf file and change server_name to RPi's ip address
+
 ![image_7](./image/12.png)
 
 Follow this way to know RPi's ip address
