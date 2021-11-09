@@ -7,6 +7,7 @@ Sound Bar Debug Tool allows you to check CEC or MTK Log
 Link: https://sourceforge.net/projects/win32diskimager/
 Download win32diskimage program and launch.
 Write path of provided image in "Image File" and assign "device" to empty micro SD card driver. 
+
 ![image_8](./image/8.jpeg)
 
 It would take about 20 minutes.
